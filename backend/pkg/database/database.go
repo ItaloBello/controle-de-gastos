@@ -11,15 +11,39 @@ import (
 
 func createTables(db *sqlx.DB) error {
 	const query = `
-		CREATE TABLE IF NOT EXISTS usuarios(
+		CREATE TABLE IF NOT EXISTS users(
 			id SERIAL PRIMARY KEY,
 			name VARCHAR(255) NOT NULL,
 			email VARCHAR(255) UNIQUE NOT NULL,
 			hash_pass TEXT NOT NULL,
         	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+			CONSTRAINT valid_email CHECK (
+					email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+			)
 		);
-	`
+
+
+		CREATE TABLE IF NOT EXISTS expenses(
+			id SERIAL PRIMARY KEY,
+			value NUMERIC NOT NULL,
+			description TEXT,
+			expense_date DATE, 
+			category_id INTEGER, 
+			user_id INTEGER NOT NULL, 
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+			CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+			CONSTRAINT fk_category_id FOREIGN KEY(category_id) REFERENCES categories(id) ON DELETE CASCADE
+		);
+
+		CREATE TABLE IF NOT EXISTS categories(
+			id SERIAL PRIMARY KEY,
+			name VARCHAR(100) UNIQUE NOT NULL
+		);
+		`
 	_, err := db.Exec(query)
 	return err
 }

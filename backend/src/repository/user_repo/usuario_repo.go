@@ -13,8 +13,9 @@ type usuarioRepo struct {
 type UsuarioRepo interface {
 	GetAll() ([]model.User, error)
 	GetByID(id int) (*model.User, error)
+	GetByEmailAndPassword(email, hashPass string) (*model.User, error)
 	Create(user *model.User) (int, error)
-	Update(id int, user *model.User) error
+	Update(user *model.User) error
 	Delete(id int) error
 }
 
