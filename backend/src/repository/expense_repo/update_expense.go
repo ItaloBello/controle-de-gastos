@@ -2,7 +2,7 @@ package expense_repo
 
 import "controle-de-gastos/src/model"
 
-func (r *expenseRepo) Update(expenseRepo model.Expense) error {
+func (r *expenseRepo) Update(expense model.Expense) error {
 	const query = `UPDATE expenses SET
 					value = :value,
 					description = :description,
@@ -12,7 +12,7 @@ func (r *expenseRepo) Update(expenseRepo model.Expense) error {
 					updated_at = CURRENT_TIMESTAMP
 					WHERE id = :id;`
 
-	_, err := r.db.NamedExec(query, expenseRepo)
+	_, err := r.db.NamedExec(query, expense)
 
 	return err
 }

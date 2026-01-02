@@ -16,7 +16,7 @@ type ExpenseRepo interface {
 	GetByUserId(userId int) ([]model.Expense, error)
 
 	Create(expense model.ExpenseCreateRequest) (int, error)
-	Update(expenseRepo model.Expense) error
+	Update(expense model.Expense) error
 	Delete(id int) error
 }
 
