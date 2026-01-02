@@ -15,7 +15,7 @@ type ExpenseService interface {
 	GetExpensesByUserId(userId int) ([]model.Expense, error)
 
 	CreateExpense(expense model.ExpenseCreateRequest) (int, error)
-	UpdateExpense(expense model.Expense) error
+	UpdateExpense(id int,expense model.Expense) error
 	DeleteExpense(id int) error
 }
 
@@ -39,7 +39,8 @@ func (s *expenseService) CreateExpense(expense model.ExpenseCreateRequest) (int,
 	return s.repo.Create(expense)
 }
 
-func (s *expenseService) UpdateExpense(expense model.Expense) error{
+func (s *expenseService) UpdateExpense(id int, expense model.Expense) error{
+	expense.Id = id
 	return s.repo.Update(expense)
 }
 
