@@ -14,6 +14,8 @@ type ExpenseRepo interface {
 	GetAll() ([]model.Expense, error)
 	GetById(id int) (*model.Expense, error)
 	GetByUserId(userId int) ([]model.Expense, error)
+	GetFixedByUserId(userId int) ([]model.Expense, error)
+	GetNotFixedByUserId(userId int) ([]model.Expense, error)
 
 	Create(expense model.ExpenseCreateRequest) (int, error)
 	Update(expense model.Expense) error

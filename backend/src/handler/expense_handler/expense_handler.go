@@ -18,6 +18,8 @@ type ExpenseHandler interface {
 	GetAllExpenses(c *gin.Context)
 	GetExpenseById(c *gin.Context)
 	GetExpensesByUserId(c *gin.Context)
+	GetFixedExpensesByUserId(c *gin.Context)
+	GetNotFixedExpensesByUserId(c *gin.Context)
 
 	CreateExpense(c *gin.Context)
 	UpdateExpense(c *gin.Context)
@@ -66,6 +68,41 @@ func (h *expenseHandler) GetExpensesByUserId(c *gin.Context) {
 	}
 
 	expenses, err := h.service.GetExpensesByUserId(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "get expenses by userId error", "error": err.Error()})
+		fmt.Println("get expenses by userId error: " + err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, expenses)
+}
+
+func (h *expenseHandler) GetFixedExpensesByUserId(c *gin.Context) {
+	userID, err := strconv.Atoi(c.Param("userId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "userId must be a integer", "error": err.Error()})
+		fmt.Println("userId must be a integer: " + err.Error())
+		return
+	}
+
+	expenses, err := h.service.GetFixedExpensesByUserId(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "get expenses by userId error", "error": err.Error()})
+		fmt.Println("get expenses by userId error: " + err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, expenses)
+}
+func (h *expenseHandler) GetNotFixedExpensesByUserId(c *gin.Context) {
+	userID, err := strconv.Atoi(c.Param("userId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "userId must be a integer", "error": err.Error()})
+		fmt.Println("userId must be a integer: " + err.Error())
+		return
+	}
+
+	expenses, err := h.service.GetNotFixedExpensesByUserId(userID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "get expenses by userId error", "error": err.Error()})
 		fmt.Println("get expenses by userId error: " + err.Error())

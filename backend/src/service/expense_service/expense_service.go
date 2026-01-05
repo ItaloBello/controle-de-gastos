@@ -13,6 +13,8 @@ type ExpenseService interface {
 	GetAllExpenses() ([]model.Expense, error)
 	GetExpenseById(id int) (*model.Expense, error)
 	GetExpensesByUserId(userId int) ([]model.Expense, error)
+	GetFixedExpensesByUserId(userId int) ([]model.Expense, error)
+	GetNotFixedExpensesByUserId(userId int) ([]model.Expense, error)
 
 	CreateExpense(expense model.ExpenseCreateRequest) (int, error)
 	UpdateExpense(id int,expense model.Expense) error
@@ -33,6 +35,14 @@ func (s *expenseService) GetExpenseById(id int) (*model.Expense, error){
 
 func (s *expenseService) GetExpensesByUserId(userId int) ([]model.Expense, error){
 	return s.repo.GetByUserId(userId)
+}
+
+func (s *expenseService) GetFixedExpensesByUserId(userId int) ([]model.Expense, error){
+	return s.repo.GetFixedByUserId(userId)
+}
+
+func (s *expenseService) GetNotFixedExpensesByUserId(userId int) ([]model.Expense, error){
+	return s.repo.GetNotFixedByUserId(userId)
 }
 
 func (s *expenseService) CreateExpense(expense model.ExpenseCreateRequest) (int, error){

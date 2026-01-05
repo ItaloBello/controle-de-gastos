@@ -30,6 +30,9 @@ func createTables(db *sqlx.DB) error {
 			value NUMERIC NOT NULL,
 			description TEXT,
 			expense_date DATE, 
+			is_fixed BOOLEAN NOT NULL DEFAULT FALSE,
+			is_essential BOOLEAN NOT NULL DEFAULT FALSE,
+			is_paid BOOLEAN NOT NULL DEFAULT FALSE,
 			category_id INTEGER, 
 			user_id INTEGER NOT NULL, 
 			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -42,6 +45,18 @@ func createTables(db *sqlx.DB) error {
 		CREATE TABLE IF NOT EXISTS categories(
 			id SERIAL PRIMARY KEY,
 			name VARCHAR(100) UNIQUE NOT NULL
+		);
+
+		CREATE TABLE IF NOT EXISTS incomes(
+			id SERIAL PRIMARY KEY,
+			value NUMERIC NOT NULL,
+			description TEXT,
+			income_date DATE,
+			user_id INTEGER NOT NULL,
+			created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+			CONSTRAINT fk_income_user_id FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 		);
 		`
 	_, err := db.Exec(query)
