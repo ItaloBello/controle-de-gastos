@@ -3,12 +3,18 @@ package main
 import (
 	"controle-de-gastos/pkg/config"
 	"controle-de-gastos/pkg/database"
+	"controle-de-gastos/src/handler/category_handler"
 	"controle-de-gastos/src/handler/expense_handler"
+	"controle-de-gastos/src/handler/incoming_handler"
 	"controle-de-gastos/src/handler/user_handler"
+	"controle-de-gastos/src/repository/category_repo"
 	"controle-de-gastos/src/repository/expense_repo"
+	"controle-de-gastos/src/repository/incoming_repo"
 	"controle-de-gastos/src/repository/user_repo"
 	"controle-de-gastos/src/routes"
+	"controle-de-gastos/src/service/category_service"
 	"controle-de-gastos/src/service/expense_service"
+	"controle-de-gastos/src/service/incoming_service"
 	"controle-de-gastos/src/service/user_service"
 	"log"
 	"os"
@@ -38,6 +44,8 @@ func main() {
 	// Injeção de dependencias
 	routes.SetupUserRoutes(api, user_handler.NewUserHandler(user_service.NewUserService(user_repo.NewUsuarioRepo(dbConnection))))
 	routes.SetupExpenseRoutes(api, expense_handler.NewExpenseHandler(expense_service.NewExpenseService(expense_repo.NewExpenseRepo(dbConnection))))
+	routes.SetupCategoryRoutes(api, category_handler.NewCategoryHandler(category_service.NewCategoryService(category_repo.NewCategoryRepo(dbConnection))))
+	routes.SetupIncomingRoutes(api, incoming_handler.NewIncomingHandler(incoming_service.NewIncomingService(incoming_repo.NewIncomingRepo(dbConnection))))
 
 	// Iniciar servidor
 	port := os.Getenv("SERVER_PORT")

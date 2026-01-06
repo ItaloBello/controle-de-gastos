@@ -82,8 +82,8 @@ func (h userHandler) UpdateUser(c *gin.Context) {
 
 	var user model.User
 	if err := c.ShouldBindJSON(&user); err != nil{
-		c.JSON(http.StatusBadRequest, gin.H{"message":"error binding json in CreateUser", "error":err.Error()})
-		fmt.Println("error binding json in CreateUser: "+err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"message":"error binding json in UpdateUser", "error":err.Error()})
+		fmt.Println("error binding json in UpdateUser: "+err.Error())
 		return
 	}
 
